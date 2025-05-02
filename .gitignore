@@ -10,3 +10,6 @@ venv/
 *.db
 db_schema.sql
 Documentation.txt
+build
+dist
+app.spec

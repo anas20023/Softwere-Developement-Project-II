@@ -3,6 +3,7 @@
 # — App window settings
 APP_TITLE    = "Suggestion Sharing Platform - BUBT"
 API_VOTE_URL = "https://sgm.anasibnbelal.live/api/auth/suggetions/vote"
+API_AUTH_URL = "https://sgm.anasibnbelal.live/api/auth"
 API_CHECK_VOTE_URL = "https://sgm.anasibnbelal.live/api/auth/suggetions/checkVote"
 WINDOW_SIZE  = "1400x800"
 ICON_PATH    = "Frontend/assets/book.ico"

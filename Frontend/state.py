@@ -1,9 +1,7 @@
 # Frontend/utils/state.py
 
 class AppState:
-    """
-    Centralized state: track login status & user info.
-    """
+
     def __init__(self):
         self.logged_in = False
         self.user_info = {}

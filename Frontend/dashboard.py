@@ -3,8 +3,8 @@ from ttkbootstrap.constants import *
 import webbrowser
 import requests
 from tkinter import messagebox
-from config.settings import API_VOTE_URL, API_CHECK_VOTE_URL
-from utils.state import state
+from settings import API_VOTE_URL, API_CHECK_VOTE_URL
+from state import state
 
 class DashboardFrame(tb.Frame):
     def __init__(self, master, suggestions, *args, **kwargs):
