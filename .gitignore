@@ -1,2 +1,12 @@
-Documentation.txt
+# Python artifacts
+__pycache__/
+*.pyc
+
+# env
+.env
+venv/
+
+# database files
+*.db
 db_schema.sql
+Documentation.txt
