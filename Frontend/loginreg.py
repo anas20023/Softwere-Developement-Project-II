@@ -1,25 +1,21 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from api import register_user, login_user
+from session_manager import session
 
 class LoginApp(ttk.Window):
     def __init__(self):
-        # Initialize with a specific theme
         super().__init__(themename="litera")
-        
         self.title("Suggestion Sharing Platform - Login")
         self.geometry("1000x800")
         self.resizable(False, False)
 
-        # Create a container with gradient background
         self.container = ttk.Frame(self)
         self.container.pack(fill=BOTH, expand=YES)
         
-        # Create card-like frame for login
         self.frame = ttk.Frame(self.container, bootstyle="light", padding=20)
         self.frame.pack(pady=50, padx=50, fill=BOTH, expand=YES)
 
-        # Add header with logo styling
         self.header_frame = ttk.Frame(self.frame, bootstyle="light")
         self.header_frame.pack(fill=X, pady=(0, 20))
         
@@ -31,7 +27,6 @@ class LoginApp(ttk.Window):
         )
         self.label.pack(pady=10)
 
-        # Message display with better styling
         self.show_message = ttk.Label(
             self.frame, 
             text="", 
@@ -40,11 +35,9 @@ class LoginApp(ttk.Window):
         )
         self.show_message.pack(pady=10, fill=X)
         
-        # Input fields with better styling
         self.input_frame = ttk.Frame(self.frame, bootstyle="light")
         self.input_frame.pack(fill=X, pady=10)
         
-        # Student ID field
         ttk.Label(
             self.input_frame, 
             text="Student ID", 
@@ -61,7 +54,6 @@ class LoginApp(ttk.Window):
         self.student_id_entry.insert(0, "Student ID")
         self.student_id_entry.pack(pady=5, ipady=5, fill=X)
 
-        # Password field
         ttk.Label(
             self.input_frame, 
             text="Password", 
@@ -79,7 +71,6 @@ class LoginApp(ttk.Window):
         self.password_entry.insert(0, "Password")
         self.password_entry.pack(pady=5, ipady=5, fill=X)
 
-        # Button area
         self.button_frame = ttk.Frame(self.frame, bootstyle="light")
         self.button_frame.pack(fill=X, pady=20)
         
@@ -92,7 +83,6 @@ class LoginApp(ttk.Window):
         )
         self.login_button.pack(pady=10, ipady=5)
 
-        # Registration section
         self.register_frame = ttk.Frame(self.frame, bootstyle="light")
         self.register_frame.pack(fill=X, pady=(10, 0))
         
@@ -113,7 +103,6 @@ class LoginApp(ttk.Window):
         )
         self.register_button.pack(pady=5, ipady=5)
 
-        # Bind entry focus events
         self.student_id_entry.bind("<FocusIn>", self.clear_placeholder)
         self.password_entry.bind("<FocusIn>", self.clear_placeholder)
         self.student_id_entry.bind("<FocusOut>", self.reset_placeholder)
@@ -136,19 +125,28 @@ class LoginApp(ttk.Window):
                 widget.insert(0, "Password")
 
     def login(self):
-        student_id = self.student_id_entry.get()
-        password = self.password_entry.get()
-        
-        # Validate inputs aren't placeholders
-        if student_id == "Student ID" or password == "Password":
-            self.show_message.config(text="Please enter your credentials", bootstyle="danger")
+        sid = self.student_id_entry.get()
+        pwd = self.password_entry.get()
+        if sid in ("", "Student ID") or pwd in ("", "Password"):
+            self.show_message.config(text="Enter your creds, fam", bootstyle="danger")
             return
 
-        response = login_user(student_id, password)
+        response = login_user(sid, pwd)
         if response.get("success"):
-            self.show_message.config(text=f"Welcome, {response['student']['name']}!", bootstyle='success')
+            session.login(
+                user=response["student"],
+                token=response["token"]
+            )
+            self.show_message.config(
+                text=f"Welcome back, {session.user['name']}!",
+                bootstyle="success"
+            )
+            self.show_dashboard()
         else:
-            self.show_message.config(text=response.get("message", response.get('error', 'Unknown error')), bootstyle='danger')
+            self.show_message.config(
+                text=response.get("message", "Login failed"),
+                bootstyle="danger"
+            )
 
     def show_register(self):
         RegisterApp(self)
@@ -160,15 +158,12 @@ class RegisterApp(ttk.Toplevel):
         self.resizable(False, False)
         self.title("Suggestion Sharing Platform - Register")
 
-        # Main container
         self.container = ttk.Frame(self)
         self.container.pack(fill=BOTH, expand=YES)
         
-        # Card-like frame
         self.frame = ttk.Frame(self.container, bootstyle="light", padding=20)
-        self.frame.pack(pady=40, padx=40, fill=BOTH, expand=YES)
+        self.frame.pack(pady=30, padx=40, fill=BOTH, expand=YES)
 
-        # Header
         self.header_frame = ttk.Frame(self.frame, bootstyle="light")
         self.header_frame.pack(fill=X, pady=(0, 20))
         
@@ -180,7 +175,6 @@ class RegisterApp(ttk.Toplevel):
         )
         self.label.pack(pady=10)
 
-        # Message display
         self.show_message = ttk.Label(
             self.frame, 
             text="", 
@@ -189,11 +183,11 @@ class RegisterApp(ttk.Toplevel):
         )
         self.show_message.pack(pady=10, fill=X)
 
-        # Form fields
         self.entries = {}
         fields = [
             ("Name", "name"),
             ("Student ID", "student_id"),
+            ("Email", "email"),
             ("Department", "dept"),
             ("Intake", "intake"),
             ("Section", "section"),
@@ -227,7 +221,6 @@ class RegisterApp(ttk.Toplevel):
             if field == 'password':
                 self.entries['password'].config(show="*")
 
-        # Button area
         self.button_frame = ttk.Frame(self.frame, bootstyle="light")
         self.button_frame.pack(fill=X, pady=20)
         
@@ -241,7 +234,7 @@ class RegisterApp(ttk.Toplevel):
         self.register_button.pack(pady=10, ipady=5)
 
     def clear_placeholder(self, widget):
-        if widget.get() in ["Name", "Student ID", "Department", "Intake", "Section", "Password"]:
+        if widget.get() in ["Name", "Student ID", "Email", "Department", "Intake", "Section", "Password"]:
             widget.delete(0, END)
             if widget == self.entries['password']:
                 widget.config(show="*")
@@ -255,13 +248,14 @@ class RegisterApp(ttk.Toplevel):
     def register(self):
         data = {field: self.entries[field].get() for field in self.entries}
         
-        if any(value in ["", "Name", "Student ID", "Department", "Intake", "Section", "Password"] for value in data.values()):
+        if any(value in ["", "Name", "Student ID", "Email", "Department", "Intake", "Section", "Password"] for value in data.values()):
             self.show_message.config(text="All fields are required", bootstyle='danger')
             return
 
         response = register_user(
             data['name'],
             data['student_id'],
+            data['email'],
             data['dept'],
             data['intake'],
             data['section'],
@@ -270,7 +264,6 @@ class RegisterApp(ttk.Toplevel):
 
         if response.get("success"):
             self.show_message.config(text=response["message"], bootstyle='success')
-            # Show success message for 3 seconds then close
             self.after(3000, self.destroy)
         else:
             self.show_message.config(text=response.get("message", "Registration failed"), bootstyle='danger')

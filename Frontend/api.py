@@ -1,11 +1,12 @@
 import requests
 from settings import API_AUTH_URL
 
-def register_user(name, student_Id, dept, intake, section, password):
+def register_user(name, student_Id, email, dept, intake, section, password):
     """Sends registration data to the backend."""
     url = f"{API_AUTH_URL}/register"
     data = {
         "name": name,
+        "email": email,
         "student_Id": student_Id,
         "dept": dept,
         "intake": int(intake),
