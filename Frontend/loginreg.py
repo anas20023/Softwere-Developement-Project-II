@@ -1,8 +1,10 @@
+from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from api import register_user, login_user
 from session_manager import session
-
+import requests
+API_URL = "https://sgm.anasibnbelal.live/api/auth/suggetions/get"
 class LoginApp(ttk.Window):
     def __init__(self):
         super().__init__(themename="litera")
@@ -108,6 +110,14 @@ class LoginApp(ttk.Window):
         self.student_id_entry.bind("<FocusOut>", self.reset_placeholder)
         self.password_entry.bind("<FocusOut>", self.reset_placeholder)
 
+    def fetch_suggestions():
+        try:
+            resp = requests.get(API_URL)
+            resp.raise_for_status()
+            return resp.json()
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to fetch suggestions:\n{e}")
+            return []
     def clear_placeholder(self, event):
         widget = event.widget
         if widget.get() in ["Student ID", "Password"]:
@@ -123,7 +133,15 @@ class LoginApp(ttk.Window):
             elif widget == self.password_entry:
                 widget.config(show="")
                 widget.insert(0, "Password")
-
+    def show_dashboard(self):
+        self.destroy()
+        from Frontend.dashboard import DashboardFrame
+        suggestions = self.fetch_suggestions()
+        dashboard = DashboardFrame(self, suggestions)
+        dashboard.grid(row=1, column=0, columnspan=3, sticky="nsew", padx=10, pady=(50, 10))
+        self.grid_rowconfigure(1, weight=1)
+        
+        
     def login(self):
         sid = self.student_id_entry.get()
         pwd = self.password_entry.get()

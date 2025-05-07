@@ -30,6 +30,6 @@ def login_user(student_id, password):
 
     try:
         response = requests.post(url, json=data)
-        return response.json()  # Expected: { "success": true, "token": "JWT_TOKEN", "user": { ... } }
+        return response.json()  # 
     except requests.RequestException as e:
         return {"success": False, "message": f"Request failed: {e}"}

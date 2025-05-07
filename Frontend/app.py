@@ -29,7 +29,9 @@ def on_login():
     pass
 
 def on_profile():
-    # open profile window
+    tb.messagebox.showinfo("Profile", "Profile feature is not implemented yet.")
+    # Placeholder for profile functionality
+    # You can implement the profile functionality her
     pass
 
 if __name__ == '__main__':
@@ -45,24 +47,24 @@ if __name__ == '__main__':
     app.grid_columnconfigure(2, weight=2)
     app.grid_rowconfigure(1, weight=1)
     # theme default
-    app.style.theme_use(DARK_THEME)
+    app.style.theme_use("cosmo")
     # Create a style for the vote button
 
     # Row 0 buttons
 
     btn_refresh = tb.Button(app, text="Refresh", command=refresh_suggestions,
                             bootstyle="outline,success", padding=10)
-    btn_refresh.grid(row=0, column=1, padx=10, pady=10)
+    btn_refresh.grid(row=0, column=0, pady=10)
 
     # Conditionally show Login or Profile
     if getattr(state, 'user', None):
         btn_profile = tb.Button(app, text="Profile", command=on_profile,
                                 bootstyle="outline,secondary", padding=10)
-        btn_profile.grid(row=0, column=2, padx=10, pady=10)
+        btn_profile.grid(row=0, column=1, pady=10)
     else:
         btn_login = tb.Button(app, text="Login", command=on_login,
                               bootstyle="outline,primary", padding=10)
-        btn_login.grid(row=0, column=2, padx=10, pady=10)
+        btn_login.grid(row=0, column=1, pady=10)
 
     # Initial dashboard spanning all 3 columns
     suggestions = fetch_suggestions()
