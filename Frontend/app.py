@@ -22,7 +22,7 @@ class App(tb.Window):
     def __init__(self):
         super().__init__(themename="cosmo")
         self.title("Suggestion Sharing Platform")
-        self.geometry("1200x800")
+        self.geometry("1320x800")
         self.resizable(False, False)
 
         # grid config
