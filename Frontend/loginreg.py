@@ -99,7 +99,7 @@ class LoginApp(ttk.Window):
                 widget.insert(0, "Password")
 
     def show_dashboard(self):
-        self.after(2000, self.destroy)
+        self.after(1000, self.destroy)
 
     def login(self):
         sid = self.student_id_entry.get()
