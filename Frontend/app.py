@@ -16,10 +16,6 @@ def fetch_suggestions():
         messagebox.showerror("Error", f"Failed to fetch suggestions:\n{e}")
         return []
 
-def toggle_theme():
-    current = app.style.theme.name
-    new = DARK_THEME if current == DEFAULT_THEME else DEFAULT_THEME
-    app.style.theme_use(new)
 
 def refresh_suggestions():
     global dash
@@ -48,11 +44,11 @@ if __name__ == '__main__':
     app.grid_columnconfigure(1, weight=1)
     app.grid_columnconfigure(2, weight=2)
     app.grid_rowconfigure(1, weight=1)
+    # theme default
+    app.style.theme_use(DARK_THEME)
+    # Create a style for the vote button
 
     # Row 0 buttons
-    btn_toggle = tb.Button(app, text="Change Theme", command=toggle_theme,
-                           bootstyle="outline,info", padding=10)
-    btn_toggle.grid(row=0, column=0, padx=10, pady=10)
 
     btn_refresh = tb.Button(app, text="Refresh", command=refresh_suggestions,
                             bootstyle="outline,success", padding=10)
