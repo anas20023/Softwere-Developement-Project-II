@@ -104,18 +104,15 @@ class LoginApp(ttk.Window):
     def login(self):
         sid = self.student_id_entry.get()
         pwd = self.password_entry.get()
-        if sid in ("", "Student ID") or pwd in ("", "Password"):
-            self.show_message.config(text="Enter your creds, fam", bootstyle="danger")
-            return
-
+        # ... validation ...
         response = login_user(sid, pwd)
         if response.get("success"):
-            messagebox.showinfo("Login Successful", "Welcome back!")
             session.login(user=response["student"], token=response["token"])
-            self.show_message.config(text=f"Welcome back, {session.user['name']}!", bootstyle="success")
-            self.show_dashboard()
+            if self.on_success:
+                self.on_success()
+            self.destroy()
         else:
-            self.show_message.config(text=response.get("message", "Login failed"), bootstyle="danger")
+            self.show_message.config(text=response.get("message"), bootstyle="danger")
 
     def show_register(self):
         RegisterApp(self)

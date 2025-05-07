@@ -48,7 +48,7 @@ class DashboardFrame(tb.Frame):
         vsb.pack(side=RIGHT, fill=Y)
         canvas.pack(side=LEFT, fill=BOTH, expand=YES)
         
-        grid_frame = tb.Frame(canvas,padding=(40, 10))
+        grid_frame = tb.Frame(canvas,padding=(10, 20))
         canvas.create_window((0, 0), window=grid_frame, anchor="nw")
         
         grid_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
