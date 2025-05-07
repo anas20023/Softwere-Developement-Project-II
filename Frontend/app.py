@@ -26,7 +26,8 @@ def refresh_suggestions():
 
 def on_login():
     LoginApp()
-    pass
+    print(state)
+    
 
 def on_profile():
     tb.messagebox.showinfo("Profile", "Profile feature is not implemented yet.")
