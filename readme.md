@@ -89,7 +89,22 @@ Please Contact with us For Backend Repo.....
 
 ## 📸 Screenshots
 
-> _(Add screenshots of your app UI here for better showcase)_
+### 🔐 Login & Registration
+
+![Login](https://i.postimg.cc/7PmnrhGK/Screenshot-2025-05-14-130543.png)
+
+![Registration](https://i.postimg.cc/W4LMwJC1/Screenshot-2025-05-14-130557.png)
+
+### 🏠 Suggestion Dashboard
+![Dashboard](https://i.postimg.cc/gJMXQwSR/Screenshot-2025-05-14-130632.png)
+
+![Dashboard](https://i.postimg.cc/cCgHzF8y/Screenshot-2025-05-14-130532.png)
+
+### 📤 Upload Suggestion
+![Upload](https://i.postimg.cc/Kcw4ThdZ/Screenshot-2025-05-14-130659.png)
+
+### 👤 Profile View
+![Profile](https://i.postimg.cc/4xTd8bfq/Screenshot-2025-05-14-130646.png)
 
 ---
 
